@@ -128,8 +128,12 @@ class overview extends \table_sql {
             $picturefields = \user_picture::fields('u');
         }
 
+        /*$enroljoin = get_enrolled_with_capabilities_join($this->progress->get_context(), '', '', $groups,
+            get_config('block_completion_progress', 'showinactive') == 0);*/
+
         $enroljoin = get_enrolled_with_capabilities_join($this->progress->get_context(), '', '', $groups,
-            get_config('block_completion_progress', 'showinactive') == 0);
+            (get_config('block_completion_progress', 'showinactive') == 0
+            && (!has_capability('moodle/course:viewsuspendedusers', $this->progress->get_context()))));
 
         $params = $enroljoin->params + ['courseid' => $this->progress->get_course()->id];
         if ($roleid) {
