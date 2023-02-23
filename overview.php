@@ -135,6 +135,7 @@ if (!has_capability('moodle/site:accessallgroups', $context)) {
             unset($allgroups[$key]);
         }
     }
+    $group = min(array_keys($allgroups));
 }
 // =========== E/O CUSTOM SA CODE ===========
 
