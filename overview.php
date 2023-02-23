@@ -56,10 +56,13 @@ $context = context_course::instance($courseid);
 // Get specific block config and context.
 $block = $DB->get_record('block_instances', array('id' => $id), '*', MUST_EXIST);
 $blockcontext = context_block::instance($id);
-
+/*
 $notesallowed = !empty($CFG->enablenotes) && has_capability('moodle/notes:manage', $context);
 $messagingallowed = !empty($CFG->messaging) && has_capability('moodle/site:sendmessage', $context);
 $bulkoperations = has_capability('moodle/course:bulkmessaging', $context) && ($notesallowed || $messagingallowed);
+*/
+// SA DISABLE BULK, MESSAGING AND NOTES
+$bulkoperations = false;
 
 // Set up page parameters.
 $PAGE->set_course($course);
@@ -106,6 +109,35 @@ if (has_capability('moodle/site:accessallgroups', $context)) {
     $allgroupings = [];
     $groupids = array_keys($allgroups);
 }
+
+// =========== CUSTOM SA CODE ===========
+// Ignore any groups where this user is not an assessor
+
+/* Remove group id from groups where !has_capability('moodle/site:accessallgroups'
+ * AND user + group is not in role_assignments_custom table
+ */
+if (!has_capability('moodle/site:accessallgroups', $context)) {
+    foreach($allgroups as $key => $g) {
+
+        $sql = "SELECT groupid
+            FROM {role_assignments_custom} rac
+            WHERE rac.groupid = :groupid
+            AND rac.userid = :userid
+            AND rac.courseid = :courseid";
+        $gpparams = array(
+            'groupid'   => $g->id,
+            'userid'    => $USER->id,
+            'courseid'  => $courseid
+        );
+        $checkassessor = $DB->record_exists_sql($sql, $gpparams);
+
+        if (!$checkassessor) {
+            unset($allgroups[$key]);
+        }
+    }
+}
+// =========== E/O CUSTOM SA CODE ===========
+
 foreach ($allgroups as $rec) {
     if ($group == $rec->id) {
         $groupids = [ $rec->id ]; // Selected filter.
