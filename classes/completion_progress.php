@@ -574,11 +574,11 @@ class completion_progress implements \renderable {
         $this->completions = [];
         foreach ($rset as $compl) {
             $submission = $this->submissions[$compl->userid][$compl->cmid] ?? null;
-
-            if ($compl->completionstate == COMPLETION_INCOMPLETE && $submission) {
+            if ($compl->completionstate == COMPLETION_INCOMPLETE && $submission && !$submission->graded) {
                 $this->completions[$compl->userid][$compl->cmid] = 'submitted';
-            } else if ($compl->completionstate == COMPLETION_COMPLETE_FAIL && $submission
-                    && !$submission->graded) {
+            } else if ($compl->completionstate == COMPLETION_INCOMPLETE && $submission && $submission->graded) {
+                $this->completions[$compl->userid][$compl->cmid] = COMPLETION_COMPLETE_FAIL;
+            } else if ($compl->completionstate == COMPLETION_COMPLETE_FAIL && $submission && !$submission->graded) {
                 $this->completions[$compl->userid][$compl->cmid] = 'submitted';
             } else {
                 $this->completions[$compl->userid][$compl->cmid] = $compl->completionstate;
