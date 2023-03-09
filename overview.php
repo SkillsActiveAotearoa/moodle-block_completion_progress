@@ -135,6 +135,7 @@ if (!has_capability('moodle/site:accessallgroups', $context)) {
             unset($allgroups[$key]);
         }
     }
+    $groupids = array_keys($allgroups);
 }
 // =========== E/O CUSTOM SA CODE ===========
 
@@ -151,7 +152,7 @@ foreach ($allgroupings as $rec) {
     $groupoptions["g{$rec->id}"] = format_string($rec->name);
 }
 if (!$groupids) {
-    $group = min(array_keys($allgroups)); // Default = 0 | SA change = min(array_keys($allgroups))
+    $group = 0;
     $PAGE->set_url($PAGE->url, ['group' => $group]);
 }
 
