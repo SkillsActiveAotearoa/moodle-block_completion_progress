@@ -637,7 +637,12 @@ class completion_progress implements \renderable {
                             LEFT JOIN {assign_grades} ag ON ag.assignment = s.assignment
                                   AND ag.attemptnumber = s.attemptnumber
                                   AND ag.userid = s.userid
-                          WHERE s.latest = 1
+                                  WHERE s.attemptnumber = (
+                                      SELECT MAX(attemptnumber)
+                                      FROM mdl_assign_submission
+                                      WHERE status = 'submitted'
+                                      AND userid = s.userid
+                                      AND assignment = s.assignment)
                             AND s.status = 'submitted'
                             AND a.course = :courseid
                             AND (
