@@ -46,7 +46,7 @@ if (!class_exists('mod_quiz\quiz_settings')) {
  * @copyright  2020 Jonathon Fowler <fowlerj@usq.edu.au>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quiz_completion_test extends \block_completion_progress\tests\completion_testcase {
+final class quiz_completion_test extends \block_completion_progress\tests\completion_testcase {
     /**
      * A data provider supplying each of the possible quiz grade methods.
      * @return array
@@ -69,7 +69,7 @@ class quiz_completion_test extends \block_completion_progress\tests\completion_t
      * @covers \block_completion_progress\completion_progress
      * @dataProvider grademethod_provider
      */
-    public function test_quiz_passfail($grademethod) {
+    public function test_quiz_passfail($grademethod): void {
         $generator = $this->getDataGenerator();
 
         $instance = $generator->create_module('quiz', [
@@ -152,7 +152,7 @@ class quiz_completion_test extends \block_completion_progress\tests\completion_t
      * @covers \block_completion_progress\completion_progress
      * @dataProvider grademethod_provider
      */
-    public function test_quiz_basic($grademethod) {
+    public function test_quiz_basic($grademethod): void {
         $generator = $this->getDataGenerator();
 
         $instance = $generator->create_module('quiz', [

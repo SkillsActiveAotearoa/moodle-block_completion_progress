@@ -42,7 +42,7 @@ use block_completion_progress\defaults;
  * @copyright  2017 onwards Nelson Moller  {@link http://moodle.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class general_test extends \advanced_testcase {
+final class general_test extends \advanced_testcase {
     /**
      * Teacher users.
      * @var array
@@ -54,6 +54,12 @@ class general_test extends \advanced_testcase {
      * @var array
      */
     private $students = [];
+
+    /**
+     * A course object.
+     * @var object
+     */
+    private $course = null;
 
     /**
      * Number of students to create.
@@ -102,7 +108,7 @@ class general_test extends \advanced_testcase {
      * Check that a student's excluded grade hides the activity from the student's progress bar.
      * @covers \block_completion_progress\completion_progress
      */
-    public function test_grade_excluded() {
+    public function test_grade_excluded(): void {
         global $DB, $PAGE;
 
         $output = $PAGE->get_renderer('block_completion_progress');
@@ -165,7 +171,7 @@ class general_test extends \advanced_testcase {
      * Test checking of pages at site-level or not.
      * @covers \block_completion_progress
      */
-    public function test_on_site_page() {
+    public function test_on_site_page(): void {
         global $PAGE;
 
         $generator = $this->getDataGenerator()->get_plugin_generator('mod_assign');
@@ -215,7 +221,7 @@ class general_test extends \advanced_testcase {
      * Test that asynchronous course copy preserves all expected block instances.
      * @covers \restore_completion_progress_block_task
      */
-    public function test_course_copy() {
+    public function test_course_copy(): void {
         global $DB;
 
         $this->setAdminUser();
@@ -318,7 +324,7 @@ class general_test extends \advanced_testcase {
      * Test course modules view urls.
      * @covers \block_completion_progress\completion_progress
      */
-    public function test_view_urls() {
+    public function test_view_urls(): void {
         global $DB, $PAGE;
 
         $output = $PAGE->get_renderer('block_completion_progress');

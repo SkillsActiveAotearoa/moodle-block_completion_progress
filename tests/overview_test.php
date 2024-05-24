@@ -41,7 +41,7 @@ use block_completion_progress\defaults;
  * @copyright  2021 Jonathon Fowler <fowlerj@usq.edu.au>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class overview_test extends \advanced_testcase {
+final class overview_test extends \advanced_testcase {
     /**
      * Teacher users.
      * @var array
@@ -59,6 +59,12 @@ class overview_test extends \advanced_testcase {
      * @var array
      */
     private $groups = [];
+
+    /**
+     * A course object.
+     * @var object
+     */
+    private $course = null;
 
     /**
      * Number of students to create.
@@ -116,7 +122,7 @@ class overview_test extends \advanced_testcase {
      * Test optional settings' effects on the overview table.
      * @covers \block_completion_progress\table\overview
      */
-    public function test_overview_options() {
+    public function test_overview_options(): void {
         global $DB, $PAGE;
 
         $output = $PAGE->get_renderer('block_completion_progress');
@@ -203,7 +209,7 @@ class overview_test extends \advanced_testcase {
      * Test that the overview table correctly sorts by progress.
      * @covers \block_completion_progress\table\overview
      */
-    public function test_overview_percentage_sort() {
+    public function test_overview_percentage_sort(): void {
         global $DB, $PAGE;
 
         $PAGE->set_url('/');
