@@ -14,7 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  * Completion Progress block definition
  *
@@ -86,6 +85,15 @@ class block_completion_progress extends block_base {
      */
     public function instance_allow_config() {
         return !self::on_site_page($this->page);
+    }
+
+    /**
+     * Clean up cached percentages.
+     */
+    public function instance_delete() {
+        global $DB;
+        $DB->delete_records('block_completion_progress', ['blockinstanceid' => $this->instance->id]);
+        return parent::instance_delete();
     }
 
     /**

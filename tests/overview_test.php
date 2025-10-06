@@ -75,6 +75,8 @@ final class overview_test extends \advanced_testcase {
      * Create a course and add enrol users to it.
      */
     protected function setUp(): void {
+        parent::setUp();
+
         $this->resetAfterTest(true);
 
         set_config('enablecompletion', 1);
@@ -258,6 +260,7 @@ final class overview_test extends \advanced_testcase {
         $completion->update_state($page1cm, COMPLETION_COMPLETE, $this->students[0]->id);
 
         $progress = (new completion_progress($this->course))->for_overview()->for_block_instance($blockinstance);
+        $progress->compute_overview_percentages(null);
         $table = new \block_completion_progress\table\overview($progress, [], 0, true);
         $table->set_sortdata([['sortby' => 'progress', 'sortorder' => SORT_DESC]]);
         $table->define_baseurl('/');
